@@ -36,6 +36,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -208,6 +209,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Ghoul_running_spritesheet_0: -7499243371771237345
+      Ghoul_running_spritesheet_2: 6257893139765552109
+      Ghoul_running_spritesheet_1: 4034592197089521505
+      Ghoul_running_spritesheet_3: 5941968655352716773
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

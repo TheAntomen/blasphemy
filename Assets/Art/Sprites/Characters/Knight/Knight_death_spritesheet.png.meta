@@ -39,6 +39,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -232,6 +233,12 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Knight_death_spritesheet_0: -4642122191014307106
+      Knight_death_spritesheet_2: -1248186780069658916
+      Knight_death_spritesheet_4: 1717221637761028030
+      Knight_death_spritesheet_1: 8362881048069310243
+      Knight_death_spritesheet_3: 1984808335285868628
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -90,6 +90,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -640,6 +641,29 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      purpleFloor1 1_8: -2751719657797726819
+      purpleFloor1 1_15: 8533206730067075000
+      purpleFloor1 1_9: 7109466501207613669
+      purpleFloor1 1_10: -6627316619298691544
+      purpleFloor1 1_7: -2984609759057758240
+      purpleFloor1 1_18: -1632595490117661882
+      purpleFloor1 1_0: 9021024616711246084
+      purpleFloor1 1_12: -5138046085318617882
+      purpleFloor1 1_11: 3924426633072242283
+      purpleFloor1 1_6: -1565647127088327150
+      purpleFloor1 1_14: 1964657685059035203
+      purpleFloor1 1_1: -1586952453983514972
+      purpleFloor1 1_2: -6981606805332889920
+      purpleFloor1 1_4: 5429289667404684683
+      purpleFloor1 1_13: -7382087318987008473
+      purpleFloor1 1_16: 2677567811957130190
+      purpleFloor1 1_5: 545165814741123204
+      purpleFloor1 1_20: 881355334217730994
+      purpleFloor1 1_3: -154273871972169768
+      purpleFloor1 1_21: -482946150329592216
+      purpleFloor1 1_19: -8985629351515016391
+      purpleFloor1 1_17: 398650650508191180
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

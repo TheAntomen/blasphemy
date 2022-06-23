@@ -36,6 +36,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -208,6 +209,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      knightLeft2Running_spritesheet_3: 1723280727996954215
+      knightLeft2Running_spritesheet_0: -8999786800046512171
+      knightLeft2Running_spritesheet_1: -9148551514030592494
+      knightLeft2Running_spritesheet_2: 2681415321850740653
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

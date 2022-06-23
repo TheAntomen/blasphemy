@@ -36,6 +36,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -208,6 +209,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Ghoul_idle_spritesheet_3: -7890136634873391308
+      Ghoul_idle_spritesheet_0: -2081016748117387139
+      Ghoul_idle_spritesheet_2: 617120682836406783
+      Ghoul_idle_spritesheet_1: 7875199619449473678
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
