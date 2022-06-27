@@ -4,40 +4,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Class for the player-controlled knight
+/// </summary>
 public class Knight : MonoBehaviour
 {
 
-    //Public variables
+    // Properties
+    public float mouseAngle { get; private set; }
+
+    // Public variables
     public const int MAX_HP = 100;
     public const float MAX_SPEED = 5.0f;
     public const float ATTACK_SPEED = 0.5f;
-    public float mouseAngle { get; private set; }
     public float timeInvincible = 1.0f;
-
     public GameObject SlashAttack;
     public AudioClip swordAttack;
 
-    //Local variables
-    Rigidbody2D rb2d;
-    Animator animator;
-    ArmPivot armpivot;
-    SpriteRenderer s_renderer;
-    SpriteRenderer sword_renderer;
-    AudioSource audioSource;
-    Vector2 mousePosition;
-    Vector2 knightPosition;
-    Vector2 relativePosition;
-    Vector2 offset;
+    // Private variables
+    private Rigidbody2D rb2d;
+    private Animator animator;
+    private ArmPivot armpivot;
+    private SpriteRenderer s_renderer;
+    private SpriteRenderer sword_renderer;
+    private AudioSource audioSource;
+    private Vector2 mousePosition;
+    private Vector2 knightPosition;
+    private Vector2 relativePosition;
+    private Vector2 offset;
 
-    float horizontal;
-    float vertical;
-    float invincibleTimer;
-    float attackTimer;
-    float deathTimer;
-    int currentHp;
-    bool isInvincible;
-    bool dead;
-    bool attacking;
+    private float horizontal;
+    private float vertical;
+    private float invincibleTimer;
+    private float attackTimer;
+    private int currentHp;
+    private bool isInvincible;
+    private bool dead;
+    private bool attacking;
 
     // Start is called before the first frame update
     void Start()
@@ -64,12 +67,11 @@ public class Knight : MonoBehaviour
 
             knightPosition = transform.position;
             mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            relativePosition = mousePosition - knightPosition;
-            mouseAngle = (int)(Mathf.Atan2(relativePosition.y, relativePosition.x) * Mathf.Rad2Deg);
+
+            mouseAngle = calcMouseAngle();
 
             animator.SetFloat("Angle", mouseAngle);
             animator.SetFloat("Speed", move.magnitude);
-
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -106,6 +108,7 @@ public class Knight : MonoBehaviour
             }
         }
     }
+
     void FixedUpdate()
     {
         float speed = MAX_SPEED;
@@ -117,6 +120,9 @@ public class Knight : MonoBehaviour
         if (!dead) rb2d.MovePosition(position);
     }
 
+    /// <summary>
+    /// Instantiates an attack if there is not a cooldown of an attack
+    /// </summary>
     void Attack()
     {
         if (!attacking)
@@ -130,6 +136,10 @@ public class Knight : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Change the knights health based on the amount of damage taken and updates UI accordingly
+    /// </summary>
+    /// <param name="amount"></param>
     public void ChangeHealth(int amount)
     {
         if (amount < 0)
@@ -147,6 +157,9 @@ public class Knight : MonoBehaviour
         UIHealthBar.instance.SetValue(currentHp / (float)MAX_HP);
     }
 
+    /// <summary>
+    /// Displays effects of the knight taking damage, swithcing between colors
+    /// </summary>
     public void DamageTaken()
     {
         Color damageColor = new Color(1.000f, 0.552f, 0.552f, 1.000f);
@@ -166,8 +179,19 @@ public class Knight : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Calculates angle relative angle between knight and current mouse position
+    /// </summary>
+    /// <returns>float of the angle</returns>
+    private float calcMouseAngle()
+    {
+        relativePosition = mousePosition - knightPosition;
+        return (int)(Mathf.Atan2(relativePosition.y, relativePosition.x) * Mathf.Rad2Deg);
+    }
+
     public void PlaySound(AudioClip clip)
     {
         audioSource.PlayOneShot(clip);
     }
+
 }

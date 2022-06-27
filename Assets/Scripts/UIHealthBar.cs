@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Class updating the health bar based on current health of knight
+/// </summary>
 public class UIHealthBar : MonoBehaviour
 {
     public static UIHealthBar instance { get; private set; }

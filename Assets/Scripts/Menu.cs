@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Class for handling the menu and the buttons pressed
+/// </summary>
 public class Menu : MonoBehaviour
 {
 
-    Animation anim;
-
+    Animation anim; // May implement this in a later stage
 
     public void StartNormal()
     {

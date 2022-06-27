@@ -2,37 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class for handling the rotation of the knight´s arm based on the angle
+/// between the knight and the mouse position, also handles attack movement
+/// </summary>
 public class ArmPivot : MonoBehaviour
 {
-    //Properties
-    bool isAttacking = false;
 
-    float attackingArc = 150;
-    float angle;
-    float absAngle;
-    float attackInterp;
-    float attackSpeed;
-    int layer;
-    Vector2 leftPos;
-    Vector2 rightPos;
-    Vector3 attackStart;
-    Vector3 attackEnd;
+    // Private variables
+    private bool isAttacking = false;
+    private float attackingArc = 150;
+    private float angle;
+    private float absAngle;
+    private float attackInterp;
+    private float attackSpeed;
+    private int layer;
+    private Vector2 leftPos;
+    private Vector2 rightPos;
+    private GameObject parent;
+    private SpriteRenderer s_renderer;
+    private Quaternion startRot, endRot, rotationZ;
 
-    GameObject parent;
-    SpriteRenderer s_renderer;
-    Vector2 armPos;
-    Quaternion startRot, endRot, rotationZ, localRot;
-
-
+    
     void Start()
     {
-        parent = this.transform.parent.gameObject;
+        parent = transform.parent.gameObject;
         s_renderer = GetComponentInChildren<SpriteRenderer>();
 
         // Define different positios for arm.
         rightPos = transform.localPosition;
         leftPos = rightPos;
-        leftPos.x = leftPos.x * -1;
+        leftPos.x *= -1;
     }
 
     void FixedUpdate()
@@ -77,31 +77,7 @@ public class ArmPivot : MonoBehaviour
                 transform.localPosition = leftPos;
                 layer = -1;
             }
-
-            /*
-            if (absAngle > 112.5)
-            {
-                transform.localPosition = rightPos;
-                layer = -1;
-            }
-            else if (absAngle <= 67.5)
-            {
-                transform.localPosition = leftPos;
-                layer = -1;
-            }
-            else if (absAngle >= 90)
-            {
-                transform.localPosition = leftPos;
-                layer = -1;
-            }
-            else
-            {
-                transform.localPosition = rightPos;
-                layer = -1;
-            }
-            */
         }
-
 
         if (absAngle < 90)
         {
@@ -161,7 +137,5 @@ public class ArmPivot : MonoBehaviour
         attackInterp = 0;
         attackSpeed = 7.0f;
     }
-
-
 }
 

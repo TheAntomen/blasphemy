@@ -4,27 +4,26 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
+/// <summary>
+/// Handles the overall pace and state of the game, such as spawning enemies and
+/// keeping track on win condition
+/// </summary>
 public class GameController : MonoBehaviour
 {
-
+    // Public variables
     public const int TOTAL_WAVES = 8;
-
     public int currentWave;
     public int difficulty;
-
     public SpawnManager spawnManager;
     public Canvas ui;
 
-
+    // Private variables
     private const float pauseDuration = 3.0f;
-
     private float pauseCounter;
-
     private GameObject[] enemies;
     private GameObject knight;
     private TextMeshProUGUI wavetext;
     
-
     // Start is called before the first frame update
     void Start()
     {
@@ -54,6 +53,8 @@ public class GameController : MonoBehaviour
             {
                 pauseCounter += Time.deltaTime;
                 wavetext.SetText(currentWave + " / " + "8");
+
+                // If all waves has been defeated, we have won
                 if (currentWave > TOTAL_WAVES)
                 {
                     StateNameController.completedNormal = true;

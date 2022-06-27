@@ -2,23 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Simple class which plays background sound, does not destroy on load.
+/// </summary>
 public class AmbiencePlayer : MonoBehaviour
 {
-    private AudioSource _audioSource;
+    // Private variables
+    private AudioSource source;
     private void Awake()
     {
         DontDestroyOnLoad(transform.gameObject);
-        _audioSource = GetComponent<AudioSource>();
+        source = GetComponent<AudioSource>();
     }
 
     public void PlayMusic()
     {
-        if (_audioSource.isPlaying) return;
-        _audioSource.Play();
+        if (source.isPlaying) return;
+        source.Play();
     }
-
     public void StopMusic()
+
     {
-        _audioSource.Stop();
+        source.Stop();
     }
 }

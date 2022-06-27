@@ -3,22 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
+/// <summary>
+/// Class for handling the ghouls pathing and attacks towards the knight
+/// </summary>
 public class GhoulAI : MonoBehaviour
 {
+    // Properties
     public float speed { get; set; }
 
+    // Public variables
     public GameObject knight;
     public float nextWaypointDistance = 3f;
 
-    Vector2 lookDirection;
-    int currentWaypoint = 0;
-    bool reachedEndOfPath = false;
-    Vector2 direction;
-    Path path;
-    Seeker seeker;
-    Rigidbody2D rb;
-    Animator animator;
-    Ghoul enemy;
+    // Private variables
+    private Vector2 lookDirection;
+    private int currentWaypoint = 0;
+    private bool reachedEndOfPath = false;
+    private Vector2 direction;
+    private Path path;
+    private Seeker seeker;
+    private Rigidbody2D rb;
+    private Animator animator;
+    private Ghoul enemy;
 
     // Start is called before the first frame update
     void Start()
@@ -40,9 +46,6 @@ public class GhoulAI : MonoBehaviour
         {
             if (seeker.IsDone()) seeker.StartPath(rb.position, knight.transform.position, OnPathComplete);
         }
-            
-        
-        
     }
 
     void OnPathComplete(Path p)

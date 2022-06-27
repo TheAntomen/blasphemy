@@ -2,45 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class for handling the logic for spawning enemies
+/// </summary>
 public class SpawnManager : MonoBehaviour
 {
+    // Properties
     public bool Spawning { get; private set; }
 
+    // Public variables
+    public int costRegularGhoul = 1;
+    public int costFastGhoul = 2;
+    public int costStrongGhoul = 3;
     public GameObject regularGhoul;
     public GameObject fastGhoul;
     public GameObject strongGhoul;
     public GameController controller;
 
-    public int costRegularGhoul = 1;
-    public int costFastGhoul = 2;
-    public int costStrongGhoul = 3;
-
-    
-
+    // Private variables
     private const int START_MONEY = 10;
     private int currentMoney;
-
     private int spawnIndex;
     private int enemyIndex;
     private int count;
-
-    
-    //private int enemyCounter;
-    
-    
-
     private Transform[] spawnpoints;
     private GameObject[] enemyList;
-    
-
-
-
+   
     // Start is called before the first frame update
     public void Init(int wave)
     {
         count = transform.childCount;
         currentMoney = START_MONEY + wave*2;
-        //enemyCounter = 0;
         Spawning = false;
 
         enemyList = new GameObject[] { regularGhoul, fastGhoul, strongGhoul };
@@ -54,6 +46,9 @@ public class SpawnManager : MonoBehaviour
         InvokeRepeating("SpawnEnemies", 0.0f, 1.0f);
     }
 
+    /// <summary>
+    /// Method for spawning enemies while accounting for the current wallet and cost of spawning individual enemies
+    /// </summary>
     void SpawnEnemies()
     {
         spawnIndex = Random.Range(0, count);
@@ -65,8 +60,6 @@ public class SpawnManager : MonoBehaviour
         {
             Spawning = false;
             CancelInvoke();
-            //controller.EnemyCounter = enemyCounter;
-
         }
         else
         {
@@ -90,7 +83,6 @@ public class SpawnManager : MonoBehaviour
                 currentMoney -= costRegularGhoul;
                 Instantiate(regularGhoul, spawnpoints[spawnIndex].position, regularGhoul.transform.rotation);
             }
-            //enemyCounter += 1;
         }
     }
 }

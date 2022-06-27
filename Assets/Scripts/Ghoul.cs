@@ -3,32 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class for the AI-controlled ghoul enemies
+/// </summary>
 public class Ghoul : MonoBehaviour
 {
 
-    //Public variables
-
-    public int MAX_HP = 20;
-    public int DAMAGE = 5;
-    public float MAX_SPEED = 300.0f;
-    public float RANGE = 1.5f;
-
-    public AudioClip hitClip;
-
+    // Properties
     public int maxHp { get; set; }
     public int damage { get; set; }
     public int currentHp { get; set; }
     public float maxSpeed { get; set; }
     public float range { get; set; }
 
+    // Public variables
+    public int MAX_HP = 20;
+    public int DAMAGE = 5;
+    public float MAX_SPEED = 300.0f;
+    public float RANGE = 1.5f;
+    public AudioClip hitClip;
+
+    // Private variables
     private Color regularColor;
     private Color damageColor;
     private bool damageTaken;
     private float flashTime = 0.4f;
     private float flashTimer;
     private int difficulty;
-
-    //Local variables
     Animator animator;
     SpriteRenderer s_renderer;
     Rigidbody2D rb;
@@ -79,6 +80,10 @@ public class Ghoul : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Change the ghoul´s health based on the amount of damage taken
+    /// </summary>
+    /// <param name="amount"></param>
     public void ChangeHealth(int amount)
     {
         if (amount < 0 && !damageTaken)
@@ -91,6 +96,9 @@ public class Ghoul : MonoBehaviour
         currentHp = Mathf.Clamp(currentHp + amount, 0, MAX_HP);
     }
 
+    /// <summary>
+    /// Displays effects of the ghoul taking damage, swithcing between colors
+    /// </summary>
     public void DamageTaken()
     {
         if (String.Equals(s_renderer.color.ToString(), damageColor.ToString()))
