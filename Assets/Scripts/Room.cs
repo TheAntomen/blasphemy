@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class containing coordinate and neighbours of a room
+/// </summary>
 public class Room
 {
     public Vector2Int roomCoordinate;
@@ -34,6 +37,10 @@ public class Room
         return neighbourdCoordinates;
     }
 
+    /// <summary>
+    /// Connects a neighbour with direction to the room
+    /// </summary>
+    /// <param name="neighbour"></param>
     public void Connect(Room neighbour)
     {
         string direction = "";
@@ -57,4 +64,15 @@ public class Room
         }
         neighbours.Add(direction, neighbour);
     }
+
+    public string PrefabName()
+    {
+        string name = "Room_";
+        foreach (KeyValuePair<string, Room> neighbourPair in neighbours)
+        {
+            name += neighbourPair.Key;
+        }
+        return name;
+    }
+
 }
