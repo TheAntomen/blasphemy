@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Class for changing between scenes
 /// </summary>
-public class SceneChanger : MonoBehaviour
+public class EnterDoor : MonoBehaviour
 {
     private void OnTriggerStay2D(Collider2D other)
     {
