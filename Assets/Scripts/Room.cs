@@ -49,6 +49,10 @@ public class Room
         {
             direction = "N";
         }
+        if (neighbour.roomCoordinate.x > roomCoordinate.x)
+        {
+            direction = "E";
+        }
         if (neighbour.roomCoordinate.y > roomCoordinate.y)
         {
             direction = "S";
@@ -56,15 +60,15 @@ public class Room
         if (neighbour.roomCoordinate.x < roomCoordinate.x)
         {
             direction = "W";
-        }
-        if (neighbour.roomCoordinate.x < roomCoordinate.x)
-        {
-            direction = "E";
 
         }
         neighbours.Add(direction, neighbour);
     }
 
+    /// <summary>
+    /// Returns the prefab name of this room
+    /// </summary>
+    /// <returns>Name of prefab</returns>
     public string PrefabName()
     {
         string name = "Room_";

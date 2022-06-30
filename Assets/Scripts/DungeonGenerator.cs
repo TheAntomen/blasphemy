@@ -20,6 +20,9 @@ public class DungeonGenerator : MonoBehaviour
     void Start()
     {
         currentRoom = GenerateDungeon();
+        string roomPrefabName = currentRoom.PrefabName();
+        Debug.Log(roomPrefabName);
+        GameObject roomObject = (GameObject)Instantiate(Resources.Load("Rooms/" + roomPrefabName));
         PrintGrid();
     }
 
