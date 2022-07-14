@@ -11,12 +11,10 @@ public class SpawnManager : MonoBehaviour
     public bool Spawning { get; private set; }
 
     // Public variables
-    public int costRegularGhoul = 1;
-    public int costFastGhoul = 2;
-    public int costStrongGhoul = 3;
     public GameObject regularGhoul;
     public GameObject fastGhoul;
     public GameObject strongGhoul;
+    public GameObject floorBoss;
     public GameObject knight;
 
     // Private variables
@@ -25,6 +23,7 @@ public class SpawnManager : MonoBehaviour
     private int count;
     private List<Vector3> enemySpawns;
     private Vector3 playerSpawn;
+    private Vector3 bossSpawn;
     private GameObject[] enemyList;
    
     public void Init(Room currentRoom, int floor)
@@ -36,7 +35,8 @@ public class SpawnManager : MonoBehaviour
 
         enemySpawns = currentRoom.enemySpawns;
         playerSpawn = currentRoom.playerSpawn;
-        
+        bossSpawn = currentRoom.bossSpawn;
+
         count = enemySpawns.Count;
     }
 
@@ -61,5 +61,10 @@ public class SpawnManager : MonoBehaviour
     public GameObject SpawnPlayer()
     {
         return Instantiate(knight, playerSpawn, Quaternion.identity);
+    }
+
+    public GameObject SpawnBoss()
+    {
+        return Instantiate(floorBoss, bossSpawn, Quaternion.identity);
     }
 }

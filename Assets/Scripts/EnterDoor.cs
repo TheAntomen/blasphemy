@@ -17,7 +17,7 @@ public class EnterDoor : MonoBehaviour
         {
             GameController controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
             
-            if (controller.currentEnemies <= 0)
+            if (controller.enemies.Count <= 0)
             {
                 GameObject dungeon = controller.transform.GetChild(0).gameObject;
                 DungeonGenerator dungeonGenerator = dungeon.GetComponent<DungeonGenerator>();

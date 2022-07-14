@@ -11,7 +11,7 @@ using TMPro;
 public class GameController : MonoBehaviour
 {
     // Public variables
-    public int currentEnemies;
+    public List<GameObject> enemies;
     public int currentWave;
     public int difficulty;
 
@@ -20,8 +20,7 @@ public class GameController : MonoBehaviour
     private DungeonGenerator dungeon;
     private SpawnManager spawnManager;
     private GameObject knight;
-    private List<GameObject> enemies;
-
+    private GameObject boss;
     private static GameController instance;
 
     [SerializeField]
@@ -52,9 +51,11 @@ public class GameController : MonoBehaviour
             if (spawnEnemies)
             {
                 instance.enemies = spawnManager.SpawnEnemies();
-                instance.currentEnemies = instance.enemies.Count;
-                Debug.Log(currentEnemies);
             }
+            // Spawn boss
+            instance.boss = spawnManager.SpawnBoss();
+
+            dungeon.currentRoom.visited = true;
 
             Destroy(gameObject);
         }
@@ -62,10 +63,7 @@ public class GameController : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        difficulty = GameInfo.difficulty; // TODO: ändra och ta från gameInfo istället
-        currentWave = 1;
-        
+    {        
         dungeon = DungeonGenerator.instance;  // Reference to dungeon
         dungeon.UpdateDungeon();
 
@@ -74,12 +72,14 @@ public class GameController : MonoBehaviour
 
         // Spawn player
         knight = spawnManager.SpawnPlayer();
+
+        dungeon.currentRoom.visited = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 }
 

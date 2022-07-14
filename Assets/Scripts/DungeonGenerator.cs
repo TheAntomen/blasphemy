@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Linq;
 
 /// <summary>
 /// Class for generating grid for dungeon
@@ -14,6 +15,7 @@ public class DungeonGenerator : MonoBehaviour
 
     // Public variables
     public int currentFloor = 1;
+    
     public string enteredFrom;  // Where the player entered from, used to calculate player spawn in new rooms
     public static DungeonGenerator instance;
 
@@ -21,7 +23,8 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField]
     private int numberOfRooms;
     private Room[,] rooms;
-
+    private Room startRoom;
+    private Room lastRoom;
     public int count = 0;
 
     // Awake is called when the script instance is being loaded
@@ -31,9 +34,9 @@ public class DungeonGenerator : MonoBehaviour
         {
             instance = this;
             currentRoom = GenerateDungeon();
+            startRoom = currentRoom;
         }
     }
-
     /// <summary>
     /// Called for every new room, updating the instance
     /// </summary>
@@ -44,7 +47,20 @@ public class DungeonGenerator : MonoBehaviour
         Tilemap obstacleTiles = roomObject.transform.GetChild(1).gameObject.GetComponent<Tilemap>();
         instance.currentRoom.PopulateObstacles(obstacleTiles);
         instance.currentRoom.SetPlayerSpawn(enteredFrom);
-        instance.currentRoom.SetEnemySpawns(instance.currentFloor);
+        instance.currentRoom.enemySpawns.Clear();
+        
+        if (!currentRoom.visited)
+        {
+            Debug.Log(currentRoom == lastRoom);
+            if (currentRoom == lastRoom)
+            {
+                instance.currentRoom.SetBossSpawn();
+            }
+            else
+            {
+                instance.currentRoom.SetEnemySpawns(instance.currentFloor);
+            }
+        }
     }
 
     /// <summary>
@@ -60,7 +76,8 @@ public class DungeonGenerator : MonoBehaviour
         Vector2Int initialRoomCoordinate = new Vector2Int((gridSize / 2) - 1, (gridSize / 2) - 1);
 
         Queue<Room> roomsToCreate = new Queue<Room>();
-        roomsToCreate.Enqueue(new Room(initialRoomCoordinate));
+        startRoom = new Room(initialRoomCoordinate);
+        roomsToCreate.Enqueue(startRoom);
         List<Room> createdRooms = new List<Room>();
 
         while (roomsToCreate.Count > 0 && createdRooms.Count < numberOfRooms)
@@ -70,6 +87,8 @@ public class DungeonGenerator : MonoBehaviour
             createdRooms.Add(currentRoom);
             AddNeighbours(currentRoom, roomsToCreate);
         }
+
+        lastRoom = createdRooms.Last();
 
         foreach (Room room in createdRooms)
         {
@@ -83,6 +102,9 @@ public class DungeonGenerator : MonoBehaviour
                 }
             }
         }
+
+        
+
         return rooms[initialRoomCoordinate.x, initialRoomCoordinate.y];
     }
 

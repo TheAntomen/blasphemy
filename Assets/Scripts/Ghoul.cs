@@ -65,7 +65,6 @@ public class Ghoul : MonoBehaviour
 
     private void Update()
     {
-        
         if (damageTaken)
         {
             flashTimer -= Time.deltaTime;
@@ -74,7 +73,6 @@ public class Ghoul : MonoBehaviour
             {
                 damageTaken = false;
                 CancelInvoke();
-
             }
         }
     }
@@ -97,7 +95,7 @@ public class Ghoul : MonoBehaviour
         if (currentHp == 0)
         {
             animator.SetBool("Dead", true);
-            controller.currentEnemies -= 1;
+            controller.enemies.Remove(this.gameObject);
         }
     }
 

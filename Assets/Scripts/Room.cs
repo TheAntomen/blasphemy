@@ -11,11 +11,12 @@ using UnityEngine.Tilemaps;
 public class Room
 {
     // Public variables
+    public bool visited;
     public Vector2Int roomCoordinate;
     public Vector3 playerSpawn;
+    public Vector3 bossSpawn;
     public List<Vector3> enemySpawns;
     public Dictionary<string, Room> neighbours;
-
 
     // Private variables
     private string[,] population;
@@ -33,6 +34,8 @@ public class Room
         neighbours = new Dictionary<string, Room>();
         population = new String[ROOM_WIDTH, ROOM_HEIGHT];
         enemySpawns = new List<Vector3>();
+
+        visited = false;
     }
 
     /// <summary>
@@ -56,8 +59,6 @@ public class Room
     /// <param name="obstacleTiles"></param>
     public void PopulateObstacles(Tilemap obstacleTiles)
     {
-        //Array.Clear(population, 0, population.Length);
-
         BoundsInt bounds = obstacleTiles.cellBounds;
         for (int yCoord = 0; yCoord < ROOM_HEIGHT; yCoord++)
         {
@@ -89,7 +90,7 @@ public class Room
         {
             case "N":
                 position.x = (int)Mathf.Floor(ROOM_WIDTH / 2);
-                position.y = 2;
+                position.y = 3;
                 break;
             case "E":
                 position.x = 2;
@@ -121,9 +122,8 @@ public class Room
     /// <param name="currentFloor"></param>
     public void SetEnemySpawns(int currentFloor)
     {
-        enemySpawns.Clear();
         // Determine how many spawns for the current floor (May modify this in later stage)
-        int spawnerCount = 5;
+        int spawnerCount = 1;
 
         for (int spawnIndex = 0; spawnIndex < spawnerCount; spawnIndex++)
         {
@@ -143,6 +143,12 @@ public class Room
                 }
             }
         }
+    }
+
+    public void SetBossSpawn()
+    {
+        population[ROOM_WIDTH / 2, ROOM_HEIGHT / 2] = "Boss";
+        bossSpawn = new Vector3(ROOM_WIDTH / 2, ROOM_HEIGHT / 2);
     }
 
 
