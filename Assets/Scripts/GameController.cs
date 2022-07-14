@@ -11,66 +11,76 @@ using TMPro;
 public class GameController : MonoBehaviour
 {
     // Public variables
-    public const int TOTAL_WAVES = 8;
+    public int currentEnemies;
     public int currentWave;
     public int difficulty;
-    public SpawnManager spawnManager;
-    public Canvas ui;
+
 
     // Private variables
-    private const float pauseDuration = 3.0f;
-    private float pauseCounter;
-    private GameObject[] enemies;
+    private DungeonGenerator dungeon;
+    private SpawnManager spawnManager;
     private GameObject knight;
-    private TextMeshProUGUI wavetext;
-    
+    private List<GameObject> enemies;
+
+    private static GameController instance;
+
+    [SerializeField]
+    private bool spawnEnemies = true;
+
+
+    // Awake is called when the script instance is being loaded
+    private void Awake()
+    {
+
+        if (instance == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            GameInfo.difficulty = 1;
+            instance = this;           
+        }else
+        {
+            dungeon = DungeonGenerator.instance;  // Reference to dungeon
+            dungeon.UpdateDungeon();
+
+            spawnManager = GetComponent<SpawnManager>();
+            spawnManager.Init(dungeon.currentRoom, 1);
+
+            // Spawn player
+            instance.knight = spawnManager.SpawnPlayer();
+
+            // Spawn enemies
+            if (spawnEnemies)
+            {
+                instance.enemies = spawnManager.SpawnEnemies();
+                instance.currentEnemies = instance.enemies.Count;
+                Debug.Log(currentEnemies);
+            }
+
+            Destroy(gameObject);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        difficulty = StateNameController.difficulty;
+        difficulty = GameInfo.difficulty; // TODO: ändra och ta från gameInfo istället
         currentWave = 1;
-        pauseCounter = 0;
+        
+        dungeon = DungeonGenerator.instance;  // Reference to dungeon
+        dungeon.UpdateDungeon();
 
-        wavetext = ui.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        spawnManager = GetComponent<SpawnManager>();
+        spawnManager.Init(dungeon.currentRoom, 1);
+
+        // Spawn player
+        knight = spawnManager.SpawnPlayer();
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        knight = GameObject.FindGameObjectWithTag("Player");
-
-        if (knight == null)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
-        }
-
-        if (!spawnManager.Spawning)
-        {
-            enemies = GameObject.FindGameObjectsWithTag("Enemy");
-            
-            if (enemies.Length == 0)
-            {
-                pauseCounter += Time.deltaTime;
-                wavetext.SetText(currentWave + " / " + "8");
-
-                // If all waves has been defeated, we have won
-                if (currentWave > TOTAL_WAVES)
-                {
-                    StateNameController.completedNormal = true;
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
-                }
-                else if (pauseCounter >= pauseDuration)
-                {
-                    spawnManager.Init(currentWave);
-                    currentWave++;
-                    pauseCounter = 0;
-                }
-            }
-        }
-
     }
-
 }
 
 

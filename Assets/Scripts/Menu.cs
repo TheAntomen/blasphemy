@@ -14,7 +14,7 @@ public class Menu : MonoBehaviour
 
     public void StartNormal()
     {
-        StateNameController.difficulty = 1;
+        GameInfo.difficulty = 1;
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 
@@ -22,7 +22,7 @@ public class Menu : MonoBehaviour
 
     public void StartHard()
     {
-        StateNameController.difficulty = 2;
+        GameInfo.difficulty = 2;
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }

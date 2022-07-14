@@ -17,72 +17,49 @@ public class SpawnManager : MonoBehaviour
     public GameObject regularGhoul;
     public GameObject fastGhoul;
     public GameObject strongGhoul;
-    public GameController controller;
+    public GameObject knight;
 
     // Private variables
     private const int START_MONEY = 10;
     private int currentMoney;
-    private int spawnIndex;
-    private int enemyIndex;
     private int count;
-    private Transform[] spawnpoints;
+    private List<Vector3> enemySpawns;
+    private Vector3 playerSpawn;
     private GameObject[] enemyList;
    
-    // Start is called before the first frame update
-    public void Init(int wave)
+    public void Init(Room currentRoom, int floor)
     {
-        count = transform.childCount;
-        currentMoney = START_MONEY + wave*2;
+        currentMoney = START_MONEY + floor*2;
         Spawning = false;
 
-        enemyList = new GameObject[] { regularGhoul, fastGhoul, strongGhoul };
+        enemyList = new GameObject[] {regularGhoul, fastGhoul, strongGhoul};
 
-        spawnpoints = new Transform[count];
-        for (int i = 0; i < count; i++)
-        {
-            spawnpoints[i] = transform.GetChild(i);
-        }
-
-        InvokeRepeating("SpawnEnemies", 0.0f, 1.0f);
+        enemySpawns = currentRoom.enemySpawns;
+        playerSpawn = currentRoom.playerSpawn;
+        
+        count = enemySpawns.Count;
     }
 
     /// <summary>
     /// Method for spawning enemies while accounting for the current wallet and cost of spawning individual enemies
     /// </summary>
-    void SpawnEnemies()
+    public List<GameObject> SpawnEnemies()
     {
-        spawnIndex = Random.Range(0, count);
-        enemyIndex = Random.Range(0, enemyList.Length);
+        List<GameObject> enemies = new List<GameObject>();
 
         Spawning = true;
 
-        if (currentMoney <= 0)
+        foreach(Vector3 spawn in enemySpawns)
         {
-            Spawning = false;
-            CancelInvoke();
+            int enemyIndex = Random.Range(0, enemyList.Length);
+            enemies.Add(Instantiate(enemyList[enemyIndex], spawn, Quaternion.identity));
         }
-        else
-        {
-            if (enemyIndex == 2 && currentMoney >= 3)
-            {
-                currentMoney -= costStrongGhoul;
-                Instantiate(strongGhoul, spawnpoints[spawnIndex].position, strongGhoul.transform.rotation);
-            }
-            else
-            {
-                enemyIndex = Random.Range(0, enemyList.Length - 1);
-            }
 
-            if (enemyIndex == 1 && currentMoney >= 2)
-            {
-                currentMoney -= costFastGhoul;
-                Instantiate(fastGhoul, spawnpoints[spawnIndex].position, fastGhoul.transform.rotation);
-            }
-            else
-            {
-                currentMoney -= costRegularGhoul;
-                Instantiate(regularGhoul, spawnpoints[spawnIndex].position, regularGhoul.transform.rotation);
-            }
-        }
+        return enemies;
+    }
+
+    public GameObject SpawnPlayer()
+    {
+        return Instantiate(knight, playerSpawn, Quaternion.identity);
     }
 }

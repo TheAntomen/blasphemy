@@ -1,29 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 /// <summary>
 /// Class for generating grid for dungeon
+/// TODO: Load obstacles through tilemap from object, put into population list in Room class. (måste ändra för hand i room prefabs)
 /// </summary>
 public class DungeonGenerator : MonoBehaviour
 {
+    // Properties
+    public Room currentRoom { get; set; }
+
     // Public variables
-    
+    public int currentFloor = 1;
+    public string enteredFrom;  // Where the player entered from, used to calculate player spawn in new rooms
+    public static DungeonGenerator instance;
 
     // Private variables
     [SerializeField]
     private int numberOfRooms;
-    private Room currentRoom;
     private Room[,] rooms;
 
-    // Start is called before the first frame update
-    void Start()
+    public int count = 0;
+
+    // Awake is called when the script instance is being loaded
+    private void Awake()
     {
-        currentRoom = GenerateDungeon();
-        string roomPrefabName = currentRoom.PrefabName();
-        Debug.Log(roomPrefabName);
+        if (instance == null)
+        {
+            instance = this;
+            currentRoom = GenerateDungeon();
+        }
+    }
+
+    /// <summary>
+    /// Called for every new room, updating the instance
+    /// </summary>
+    public void UpdateDungeon()
+    {
+        string roomPrefabName = instance.currentRoom.PrefabName();
         GameObject roomObject = (GameObject)Instantiate(Resources.Load("Rooms/" + roomPrefabName));
-        PrintGrid();
+        Tilemap obstacleTiles = roomObject.transform.GetChild(1).gameObject.GetComponent<Tilemap>();
+        instance.currentRoom.PopulateObstacles(obstacleTiles);
+        instance.currentRoom.SetPlayerSpawn(enteredFrom);
+        instance.currentRoom.SetEnemySpawns(instance.currentFloor);
     }
 
     /// <summary>
@@ -112,13 +133,14 @@ public class DungeonGenerator : MonoBehaviour
         for (int rowIndex = 0; rowIndex < rooms.GetLength(1); rowIndex++)
         {
             string row = "";
-            
+
             for (int columnIndex = 0; columnIndex < rooms.GetLength(0); columnIndex++)
             {
                 if (rooms[columnIndex, rowIndex] == null)
                 {
                     row += "X";
-                }else
+                }
+                else
                 {
                     row += "R";
                 }

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Cinemachine;
 
 /// <summary>
 /// Class for the player-controlled knight
@@ -28,6 +28,7 @@ public class Knight : MonoBehaviour
     private SpriteRenderer s_renderer;
     private SpriteRenderer sword_renderer;
     private AudioSource audioSource;
+    private CinemachineVirtualCamera vcam;
     private Vector2 mousePosition;
     private Vector2 knightPosition;
     private Vector2 relativePosition;
@@ -37,10 +38,15 @@ public class Knight : MonoBehaviour
     private float vertical;
     private float invincibleTimer;
     private float attackTimer;
-    private int currentHp;
+    private static int currentHp;
     private bool isInvincible;
     private bool dead;
     private bool attacking;
+
+    private void Awake()
+    {
+           
+    }
 
     // Start is called before the first frame update
     void Start()

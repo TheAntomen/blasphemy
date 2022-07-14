@@ -35,12 +35,13 @@ public class Ghoul : MonoBehaviour
     Rigidbody2D rb;
     GhoulAI ai;
     AudioSource audioSource;
+    GameController controller;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        difficulty = StateNameController.difficulty;
+        difficulty = GameInfo.difficulty;
 
         maxHp = MAX_HP * difficulty;
         damage = DAMAGE * difficulty;
@@ -54,6 +55,7 @@ public class Ghoul : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         ai = GetComponent<GhoulAI>();
         audioSource = GetComponent<AudioSource>();
+        controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
         ai.speed = maxSpeed;
 
@@ -63,10 +65,7 @@ public class Ghoul : MonoBehaviour
 
     private void Update()
     {
-        if (currentHp == 0)
-        {
-            animator.SetBool("Dead", true);
-        }
+        
         if (damageTaken)
         {
             flashTimer -= Time.deltaTime;
@@ -94,6 +93,12 @@ public class Ghoul : MonoBehaviour
             InvokeRepeating("DamageTaken", 0.0f, 0.1f);
         }
         currentHp = Mathf.Clamp(currentHp + amount, 0, MAX_HP);
+
+        if (currentHp == 0)
+        {
+            animator.SetBool("Dead", true);
+            controller.currentEnemies -= 1;
+        }
     }
 
     /// <summary>

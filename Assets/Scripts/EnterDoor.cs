@@ -8,13 +8,24 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class EnterDoor : MonoBehaviour
 {
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        Knight player = other.gameObject.GetComponent<Knight>();
+    [SerializeField]
+    string direction;
 
-        if (player != null)
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            GameController controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+            
+            if (controller.currentEnemies <= 0)
+            {
+                GameObject dungeon = controller.transform.GetChild(0).gameObject;
+                DungeonGenerator dungeonGenerator = dungeon.GetComponent<DungeonGenerator>();
+                Room room = dungeonGenerator.currentRoom;
+                dungeonGenerator.currentRoom = room.GetNeighbour(direction); // Change room to load
+                dungeonGenerator.enteredFrom = direction;   // Tell the door direction
+                SceneManager.LoadScene("TestScene");
+            }
         }
     }
 

@@ -33,15 +33,16 @@ public class GhoulAI : MonoBehaviour
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        knight = GameObject.Find("Knight");
-
+        knight = GameObject.FindGameObjectWithTag("Player");
         speed = 200f;
+
 
         InvokeRepeating("UpdatePath", 0f, 0.5f);        
     }
 
     void UpdatePath()
     {
+        
         if (knight != null)
         {
             if (seeker.IsDone()) seeker.StartPath(rb.position, knight.transform.position, OnPathComplete);
@@ -76,7 +77,7 @@ public class GhoulAI : MonoBehaviour
         Vector2 force = direction * speed * Time.deltaTime;
 
         rb.AddForce(force);
-
+        
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
         float distanceToTarget = Vector2.Distance(rb.position, knight.transform.position);
 
