@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6600074564238626810}
-  - component: {fileID: 6600074564238626811}
-  - component: {fileID: 6600074564238626809}
   - component: {fileID: 6600074564238626815}
+  - component: {fileID: 6600074564238626809}
+  - component: {fileID: 6600074564238626811}
   - component: {fileID: 6600074564238626808}
   - component: {fileID: 6600074564238626806}
   - component: {fileID: 6600074564238626812}
@@ -39,6 +39,39 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6600074564238626815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6600074564238626807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa93aee8ae55fe42adce6e0a075245d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 10
+  damage: 5
+  range: 0
+  speed: 800
+  direction: {x: 0, y: 0}
+  hitClip: {fileID: 8300000, guid: e6698038cf77c46429db1822101e3015, type: 3}
+  boss: 0
+--- !u!114 &6600074564238626809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6600074564238626807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4400c76ba67ba9041bcd2888e4b745a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knight: {fileID: 0}
+  nextWaypointDistance: 1.2
 --- !u!114 &6600074564238626811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,37 +100,6 @@ MonoBehaviour:
   tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   graphMask:
     value: -1
---- !u!114 &6600074564238626809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6600074564238626807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4400c76ba67ba9041bcd2888e4b745a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  knight: {fileID: 0}
-  nextWaypointDistance: 1.2
---- !u!114 &6600074564238626815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6600074564238626807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fa93aee8ae55fe42adce6e0a075245d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MAX_HP: 10
-  DAMAGE: 10
-  MAX_SPEED: 1000
-  RANGE: 1.5
-  hitClip: {fileID: 8300000, guid: e6698038cf77c46429db1822101e3015, type: 3}
 --- !u!61 &6600074564238626808
 BoxCollider2D:
   m_ObjectHideFlags: 0

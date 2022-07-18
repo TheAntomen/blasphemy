@@ -6,74 +6,47 @@ using UnityEngine;
 /// <summary>
 /// Class for the AI-controlled ghoul enemies
 /// </summary>
-public class Ghoul : MonoBehaviour
+public class Ghoul : Enemy, IDamageable
 {
-
     // Properties
-    public int maxHp { get; set; }
-    public int damage { get; set; }
-    public int currentHp { get; set; }
-    public float maxSpeed { get; set; }
-    public float range { get; set; }
+    public int CurrentHealth { get; set; }
+    public bool DamageTaken { get; set; }
 
     // Public variables
-    public int MAX_HP = 20;
-    public int DAMAGE = 5;
-    public float MAX_SPEED = 300.0f;
-    public float RANGE = 1.5f;
     public AudioClip hitClip;
+    public bool boss;
 
     // Private variables
-    private Color regularColor;
-    private Color damageColor;
-    private bool damageTaken;
-    private float flashTime = 0.4f;
-    private float flashTimer;
-    private int difficulty;
+    private int currentHp;
     Animator animator;
-    SpriteRenderer s_renderer;
-    Rigidbody2D rb;
-    GhoulAI ai;
     AudioSource audioSource;
     GameController controller;
-
 
     // Start is called before the first frame update
     void Start()
     {
-        difficulty = GameInfo.difficulty;
-
-        maxHp = MAX_HP * difficulty;
-        damage = DAMAGE * difficulty;
-        currentHp = MAX_HP * difficulty;
-        maxSpeed = MAX_SPEED * difficulty;
-        range = RANGE;
-
-
         animator = GetComponent<Animator>();
-        s_renderer = GetComponent<SpriteRenderer>();
-        rb = GetComponent<Rigidbody2D>();
-        ai = GetComponent<GhoulAI>();
         audioSource = GetComponent<AudioSource>();
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
-        ai.speed = maxSpeed;
-
-        regularColor = s_renderer.color;
-        damageColor = new Color(1.000f, 0f, 0f, 1.000f);
+        currentHp = health;
     }
 
-    private void Update()
+    protected override void Update()
     {
-        if (damageTaken)
-        {
-            flashTimer -= Time.deltaTime;
 
-            if (flashTimer <= 0)
-            {
-                damageTaken = false;
-                CancelInvoke();
-            }
+    }
+
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        Knight player = other.gameObject.GetComponent<Knight>();
+
+        if (player != null)
+        {
+            int dmg = damage;
+            animator.SetFloat("Direction", direction.x);
+            animator.SetTrigger("Attack");
+            player.ChangeHealth(-dmg);
         }
     }
 
@@ -81,48 +54,26 @@ public class Ghoul : MonoBehaviour
     /// Change the ghoul´s health based on the amount of damage taken
     /// </summary>
     /// <param name="amount"></param>
+    /// 
     public void ChangeHealth(int amount)
     {
         if (amount < 0 && !damageTaken)
         {
             PlaySound(hitClip);
-            flashTimer = flashTime;
-            damageTaken = true;
-            InvokeRepeating("DamageTaken", 0.0f, 0.1f);
+            StartCoroutine(DamageFlash());
         }
-        currentHp = Mathf.Clamp(currentHp + amount, 0, MAX_HP);
+        currentHp = Mathf.Clamp(currentHp + amount, 0, health);
 
         if (currentHp == 0)
         {
-            animator.SetBool("Dead", true);
+            if (boss) controller.FloorComplete();
             controller.enemies.Remove(this.gameObject);
+            animator.SetBool("Dead", true);
         }
-    }
-
-    /// <summary>
-    /// Displays effects of the ghoul taking damage, swithcing between colors
-    /// </summary>
-    public void DamageTaken()
-    {
-        if (String.Equals(s_renderer.color.ToString(), damageColor.ToString()))
-        {
-            s_renderer.color = regularColor;
-        }
-        else if (String.Equals(s_renderer.color.ToString(), regularColor.ToString()))
-        {
-            s_renderer.color = damageColor;
-        }
-        else
-        {
-            s_renderer.color = regularColor;
-        }
-
-
     }
 
     public void PlaySound(AudioClip clip)
     {
         audioSource.PlayOneShot(clip);
     }
-
 }

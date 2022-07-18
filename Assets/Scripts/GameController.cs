@@ -15,7 +15,6 @@ public class GameController : MonoBehaviour
     public int currentWave;
     public int difficulty;
 
-
     // Private variables
     private DungeonGenerator dungeon;
     private SpawnManager spawnManager;
@@ -53,7 +52,10 @@ public class GameController : MonoBehaviour
                 instance.enemies = spawnManager.SpawnEnemies();
             }
             // Spawn boss
-            instance.boss = spawnManager.SpawnBoss();
+            if (dungeon.currentRoom == dungeon.lastRoom)
+            {
+                instance.boss = spawnManager.SpawnBoss();
+            }
 
             dungeon.currentRoom.visited = true;
 
@@ -79,8 +81,18 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (dungeon.currentRoom == dungeon.lastRoom)
+        {
+
+        }
     }
+
+
+    public void FloorComplete()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
 }
 
 

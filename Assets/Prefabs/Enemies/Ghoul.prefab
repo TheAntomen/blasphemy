@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6850386920330255403}
+  - component: {fileID: 6850386920330255406}
+  - component: {fileID: 6850386920330255400}
   - component: {fileID: 6850386920330255402}
   - component: {fileID: 6850386920330255401}
-  - component: {fileID: 6850386920330255400}
   - component: {fileID: 6850386920330255399}
   - component: {fileID: 6850386920330255405}
   - component: {fileID: 6850386920330255404}
-  - component: {fileID: 6850386920330255406}
   - component: {fileID: -8337517503764194803}
   m_Layer: 0
   m_Name: Ghoul
@@ -39,6 +39,39 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6850386920330255406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6850386920330255398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa93aee8ae55fe42adce6e0a075245d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 20
+  damage: 10
+  range: 0
+  speed: 300
+  direction: {x: 0, y: 0}
+  hitClip: {fileID: 8300000, guid: e6698038cf77c46429db1822101e3015, type: 3}
+  boss: 0
+--- !u!114 &6850386920330255400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6850386920330255398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4400c76ba67ba9041bcd2888e4b745a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knight: {fileID: 0}
+  nextWaypointDistance: 1.2
 --- !u!114 &6850386920330255402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,20 +126,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.6659732, y: 0.31197774}
   m_EdgeRadius: 0
---- !u!114 &6850386920330255400
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6850386920330255398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4400c76ba67ba9041bcd2888e4b745a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  knight: {fileID: 0}
-  nextWaypointDistance: 1.2
 --- !u!50 &6850386920330255399
 Rigidbody2D:
   serializedVersion: 4
@@ -200,23 +219,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6850386920330255406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6850386920330255398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fa93aee8ae55fe42adce6e0a075245d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MAX_HP: 20
-  DAMAGE: 10
-  MAX_SPEED: 600
-  RANGE: 1.5
-  hitClip: {fileID: 8300000, guid: e6698038cf77c46429db1822101e3015, type: 3}
 --- !u!82 &-8337517503764194803
 AudioSource:
   m_ObjectHideFlags: 0

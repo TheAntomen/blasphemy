@@ -8,18 +8,13 @@ using Pathfinding;
 /// </summary>
 public class GhoulAI : MonoBehaviour
 {
-    // Properties
-    public float speed { get; set; }
-
     // Public variables
     public GameObject knight;
     public float nextWaypointDistance = 3f;
 
     // Private variables
-    private Vector2 lookDirection;
     private int currentWaypoint = 0;
     private bool reachedEndOfPath = false;
-    private Vector2 direction;
     private Path path;
     private Seeker seeker;
     private Rigidbody2D rb;
@@ -34,8 +29,6 @@ public class GhoulAI : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         knight = GameObject.FindGameObjectWithTag("Player");
-        speed = 200f;
-
 
         InvokeRepeating("UpdatePath", 0f, 0.5f);        
     }
@@ -73,8 +66,10 @@ public class GhoulAI : MonoBehaviour
         }
 
 
-        direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-        Vector2 force = direction * speed * Time.deltaTime;
+        Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
+        enemy.direction = direction;
+        Vector2 force = direction * enemy.speed * Time.deltaTime;
+
 
         rb.AddForce(force);
         
@@ -87,29 +82,7 @@ public class GhoulAI : MonoBehaviour
             currentWaypoint++;
         }
 
-        if (!Mathf.Approximately(direction.x, 0.0f))
-        {
-            lookDirection.x = direction.x;
-            lookDirection.Normalize();
-        }
-
         animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
         animator.SetFloat("Velocity", rb.velocity.x);
     }
-
-
-    private void OnCollisionStay2D(Collision2D other)
-    {
-        Knight player = other.gameObject.GetComponent<Knight>();
-
-        if (player != null)
-        {
-            int dmg = enemy.DAMAGE;
-            animator.SetFloat("Direction", lookDirection.x);
-            animator.SetTrigger("Attack");
-            player.ChangeHealth(-dmg);
-        }
-
-    }
-
 }

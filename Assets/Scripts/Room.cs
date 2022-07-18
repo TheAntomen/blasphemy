@@ -123,7 +123,7 @@ public class Room
     public void SetEnemySpawns(int currentFloor)
     {
         // Determine how many spawns for the current floor (May modify this in later stage)
-        int spawnerCount = 1;
+        int spawnerCount = 5;
 
         for (int spawnIndex = 0; spawnIndex < spawnerCount; spawnIndex++)
         {
@@ -148,7 +148,7 @@ public class Room
     public void SetBossSpawn()
     {
         population[ROOM_WIDTH / 2, ROOM_HEIGHT / 2] = "Boss";
-        bossSpawn = new Vector3(ROOM_WIDTH / 2, ROOM_HEIGHT / 2);
+        bossSpawn = new Vector3(0,0);
     }
 
 

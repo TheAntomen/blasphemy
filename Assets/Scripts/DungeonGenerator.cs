@@ -24,7 +24,7 @@ public class DungeonGenerator : MonoBehaviour
     private int numberOfRooms;
     private Room[,] rooms;
     private Room startRoom;
-    private Room lastRoom;
+    public Room lastRoom;
     public int count = 0;
 
     // Awake is called when the script instance is being loaded
@@ -51,7 +51,6 @@ public class DungeonGenerator : MonoBehaviour
         
         if (!currentRoom.visited)
         {
-            Debug.Log(currentRoom == lastRoom);
             if (currentRoom == lastRoom)
             {
                 instance.currentRoom.SetBossSpawn();
