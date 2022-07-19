@@ -21,12 +21,14 @@ public class Ghoul : Enemy, IDamageable
     Animator animator;
     AudioSource audioSource;
     GameController controller;
+    GhoulAI ai;
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
+        ai = GetComponent<GhoulAI>();
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
         currentHp = health;
@@ -44,7 +46,6 @@ public class Ghoul : Enemy, IDamageable
         if (player != null)
         {
             int dmg = damage;
-            animator.SetFloat("Direction", direction.x);
             animator.SetTrigger("Attack");
             player.ChangeHealth(-dmg);
         }
@@ -67,6 +68,7 @@ public class Ghoul : Enemy, IDamageable
         if (currentHp == 0)
         {
             if (boss) controller.FloorComplete();
+            ai.reachedEndOfPath = true;
             controller.enemies.Remove(this.gameObject);
             animator.SetBool("Dead", true);
         }

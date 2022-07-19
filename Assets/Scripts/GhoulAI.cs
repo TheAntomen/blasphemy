@@ -9,22 +9,22 @@ using Pathfinding;
 public class GhoulAI : MonoBehaviour
 {
     // Public variables
-    public GameObject knight;
+    public bool reachedEndOfPath = false;
     public float nextWaypointDistance = 3f;
+    public GameObject knight;
+    public Enemy unit;
 
     // Private variables
     private int currentWaypoint = 0;
-    private bool reachedEndOfPath = false;
+    
     private Path path;
     private Seeker seeker;
     private Rigidbody2D rb;
     private Animator animator;
-    private Ghoul enemy;
 
     // Start is called before the first frame update
     void Start()
     {
-        enemy = GetComponent<Ghoul>();
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -65,17 +65,13 @@ public class GhoulAI : MonoBehaviour
             reachedEndOfPath = false;
         }
 
-
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-        enemy.direction = direction;
-        Vector2 force = direction * enemy.speed * Time.deltaTime;
-
+        Vector2 force = direction * unit.speed * Time.deltaTime;
 
         rb.AddForce(force);
         
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
         float distanceToTarget = Vector2.Distance(rb.position, knight.transform.position);
-
 
         if (distance < nextWaypointDistance)
         {
@@ -83,6 +79,7 @@ public class GhoulAI : MonoBehaviour
         }
 
         animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
+        animator.SetFloat("Direction", direction.x);
         animator.SetFloat("Velocity", rb.velocity.x);
     }
 }

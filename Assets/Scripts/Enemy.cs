@@ -15,8 +15,6 @@ public abstract class Enemy : MonoBehaviour
 
     protected bool damageTaken;
 
-    public Vector2 direction;
-
     private Color damageColor = new Color(1.000f, 0f, 0f, 1.000f);
     private int damageFlashCount = 6;
 
