@@ -15,13 +15,16 @@ public class DungeonGenerator : MonoBehaviour
 
     // Public variables
     public int currentFloor = 1;
-    
+    public int nrEnemies;
+
     public string enteredFrom;  // Where the player entered from, used to calculate player spawn in new rooms
     public static DungeonGenerator instance;
 
     // Private variables
     [SerializeField]
     private int numberOfRooms;
+    [SerializeField]
+    
     private Room[,] rooms;
     private Room startRoom;
     public Room lastRoom;
@@ -75,7 +78,7 @@ public class DungeonGenerator : MonoBehaviour
         Vector2Int initialRoomCoordinate = new Vector2Int((gridSize / 2) - 1, (gridSize / 2) - 1);
 
         Queue<Room> roomsToCreate = new Queue<Room>();
-        startRoom = new Room(initialRoomCoordinate);
+        startRoom = new Room(initialRoomCoordinate, nrEnemies);
         roomsToCreate.Enqueue(startRoom);
         List<Room> createdRooms = new List<Room>();
 
@@ -144,7 +147,7 @@ public class DungeonGenerator : MonoBehaviour
                     roomFrac += 1.0f / availableNeighbours.Count;
                 }
             }
-            roomsToCreate.Enqueue(new Room(chosenNeighbour));
+            roomsToCreate.Enqueue(new Room(chosenNeighbour, nrEnemies));
             availableNeighbours.Remove(chosenNeighbour);
         }
     }

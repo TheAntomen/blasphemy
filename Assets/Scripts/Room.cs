@@ -20,6 +20,7 @@ public class Room
 
     // Private variables
     private string[,] population;
+    private int spawnerCount;   // How many enemies to spawn in this room, may change this later
     private const int ROOM_WIDTH = 20;
     private const int ROOM_HEIGHT = 16;
     private const int SPAWN_DIST = 5;
@@ -28,13 +29,13 @@ public class Room
     /// Constructor for this class
     /// </summary>
     /// <param name="_roomCoordinate"></param>
-    public Room(Vector2Int _roomCoordinate)
+    public Room(Vector2Int _roomCoordinate, int _spawnerCount)
     {
         roomCoordinate = _roomCoordinate;
         neighbours = new Dictionary<string, Room>();
         population = new String[ROOM_WIDTH, ROOM_HEIGHT];
         enemySpawns = new List<Vector3>();
-
+        spawnerCount = _spawnerCount;
         visited = false;
     }
 
@@ -122,8 +123,6 @@ public class Room
     /// <param name="currentFloor"></param>
     public void SetEnemySpawns(int currentFloor)
     {
-        // Determine how many spawns for the current floor (May modify this in later stage)
-        int spawnerCount = 5;
 
         for (int spawnIndex = 0; spawnIndex < spawnerCount; spawnIndex++)
         {

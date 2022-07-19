@@ -72,7 +72,7 @@ MonoBehaviour:
   reachedEndOfPath: 0
   nextWaypointDistance: 1.2
   knight: {fileID: 0}
-  enemyasd: {fileID: 6600074564238626815}
+  unit: {fileID: 6600074564238626815}
 --- !u!114 &6600074564238626811
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -21,14 +21,14 @@ public class Ghoul : Enemy, IDamageable
     Animator animator;
     AudioSource audioSource;
     GameController controller;
-    GhoulAI ai;
+    EnemyAI ai;
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
-        ai = GetComponent<GhoulAI>();
+        ai = GetComponent<EnemyAI>();
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
         currentHp = health;
@@ -78,4 +78,6 @@ public class Ghoul : Enemy, IDamageable
     {
         audioSource.PlayOneShot(clip);
     }
+
+
 }

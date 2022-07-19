@@ -9,7 +9,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField]
     protected int damage;
     [SerializeField]
-    protected float range;
+    public float range;
     [SerializeField]
     public float speed;
 
@@ -20,7 +20,7 @@ public abstract class Enemy : MonoBehaviour
 
     protected abstract void Update();
 
-    protected virtual void Attack()
+    public virtual void Attack()
     {
         Debug.Log("Attack from abstract class");
     }
