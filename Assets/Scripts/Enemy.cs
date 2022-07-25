@@ -4,6 +4,10 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {
+    public int CurrentHealth { get; set; }
+
+    [SerializeField]
+    protected bool boss;
     [SerializeField]
     protected int health;
     [SerializeField]
@@ -12,17 +16,53 @@ public abstract class Enemy : MonoBehaviour
     public float range;
     [SerializeField]
     public float speed;
+    [SerializeField]
+    public float kitingSpeed;
 
     protected bool damageTaken;
-
     private Color damageColor = new Color(1.000f, 0f, 0f, 1.000f);
     private int damageFlashCount = 6;
+    protected Animator animator;
+
+    AudioClip hitClip;
+    AudioSource audioSource;
+    GameController controller;
+    EnemyAI ai;
+
+    protected void Start()
+    {
+        animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+        ai = GetComponent<EnemyAI>();
+        controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+
+        CurrentHealth = health;
+    }
 
     protected abstract void Update();
 
     public virtual void Attack()
     {
         Debug.Log("Attack from abstract class");
+    }
+
+
+    public void ChangeHealth(int amount)
+    {
+        if (amount < 0 && !damageTaken)
+        {
+            PlaySound(hitClip);
+            StartCoroutine(DamageFlash());
+        }
+        CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0, health);
+
+        if (CurrentHealth == 0)
+        {
+            if (boss) controller.FloorComplete();
+            ai.reachedEndOfPath = true;
+            controller.enemies.Remove(this.gameObject);
+            animator.SetBool("Dead", true);
+        }
     }
 
     protected IEnumerator DamageFlash()
@@ -42,5 +82,11 @@ public abstract class Enemy : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
         yield break;
+    }
+
+    
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 }

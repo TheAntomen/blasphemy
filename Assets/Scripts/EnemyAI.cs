@@ -20,6 +20,8 @@ public class EnemyAI : MonoBehaviour
     private Seeker seeker;
     private Rigidbody2D rb;
     private Animator animator;
+    private Vector2 direction;
+    private Vector2 force;
 
     // Start is called before the first frame update
     void Start()
@@ -54,8 +56,11 @@ public class EnemyAI : MonoBehaviour
     {
         if (path == null) return;
 
-        if (currentWaypoint >= path.vectorPath.Count)
+        if (currentWaypoint + unit.range >= path.vectorPath.Count)
         {
+
+
+
             reachedEndOfPath = true;
             return;
         } else
@@ -63,8 +68,8 @@ public class EnemyAI : MonoBehaviour
             reachedEndOfPath = false;
         }
 
-        Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-        Vector2 force = direction * unit.speed * Time.deltaTime;
+        direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
+        force = direction * unit.speed * Time.deltaTime;
 
         rb.AddForce(force);
         
@@ -75,10 +80,30 @@ public class EnemyAI : MonoBehaviour
 
         // If the player is within range of the enemy, it will attack
         if (distanceToTarget < unit.range) unit.Attack();
-        
+
+        // Avoid value too close 0 to nullify artifacts, flip sprite based on direction
+        if (!Mathf.Approximately(direction.x, 0.0f))
+        {
+            if (direction.x >= 0)
+            {
+                unit.GetComponent<SpriteRenderer>().flipX = false;
+            }
+            else
+            {
+                unit.GetComponent<SpriteRenderer>().flipX = true;
+            }
+        }
 
         animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
-        animator.SetFloat("Direction", direction.x);
-        animator.SetFloat("Velocity", rb.velocity.x);
+    }
+
+    /// <summary>
+    /// Method to make the enemy run away from the player, if this is a desired behaviour
+    /// </summary>
+    private void EnemyKiting()
+    {
+        direction = -((Vector2)knight.transform.position - rb.position).normalized;
+        force = direction * unit.speed * Time.deltaTime;
+        rb.AddForce(force);
     }
 }
