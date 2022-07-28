@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8249960912683853935}
   - component: {fileID: 8249960912683853934}
   - component: {fileID: 7636013085590706199}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: StrongGhoul
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -54,8 +54,10 @@ MonoBehaviour:
   boss: 0
   health: 50
   damage: 15
+  attackRate: 0
   range: 0
   speed: 200
+  kitingSpeed: 0
 --- !u!114 &8249960912683853930
 MonoBehaviour:
   m_ObjectHideFlags: 0

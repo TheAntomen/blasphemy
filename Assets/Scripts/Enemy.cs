@@ -13,6 +13,8 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField]
     protected int damage;
     [SerializeField]
+    protected float attackRate;
+    [SerializeField]
     public float range;
     [SerializeField]
     public float speed;
@@ -23,6 +25,7 @@ public abstract class Enemy : MonoBehaviour
     private Color damageColor = new Color(1.000f, 0f, 0f, 1.000f);
     private int damageFlashCount = 6;
     protected Animator animator;
+    
 
     AudioClip hitClip;
     AudioSource audioSource;
@@ -39,12 +42,7 @@ public abstract class Enemy : MonoBehaviour
         CurrentHealth = health;
     }
 
-    protected abstract void Update();
-
-    public virtual void Attack()
-    {
-        Debug.Log("Attack from abstract class");
-    }
+    public abstract void Attack(Vector2 direction);
 
 
     public void ChangeHealth(int amount)

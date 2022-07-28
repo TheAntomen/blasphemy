@@ -11,9 +11,9 @@ public class Ghoul : Enemy, IDamageable
     // Properties
     public bool DamageTaken { get; set; }
 
-    protected override void Update()
+    public override void Attack(Vector2 direction)
     {
-
+        throw new NotImplementedException();
     }
 
     private void OnCollisionStay2D(Collision2D other)

@@ -18,8 +18,8 @@ TagManager:
   - Player
   - PlayerAttack
   - Obstacles
-  - 
-  - 
+  - EnemyProjectile
+  - Enemy
   - 
   - 
   - 

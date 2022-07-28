@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8249960912683853935}
   - component: {fileID: 8249960912683853934}
   - component: {fileID: 7636013085590706199}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Boss (placeholder)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -51,12 +51,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fa93aee8ae55fe42adce6e0a075245d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boss: 1
   health: 100
   damage: 20
+  attackRate: 0
   range: 1
   speed: 50
-  hitClip: {fileID: 8300000, guid: e6698038cf77c46429db1822101e3015, type: 3}
-  boss: 1
+  kitingSpeed: 0
 --- !u!114 &8249960912683853930
 MonoBehaviour:
   m_ObjectHideFlags: 0

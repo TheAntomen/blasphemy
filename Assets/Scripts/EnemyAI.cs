@@ -20,8 +20,6 @@ public class EnemyAI : MonoBehaviour
     private Seeker seeker;
     private Rigidbody2D rb;
     private Animator animator;
-    private Vector2 direction;
-    private Vector2 force;
 
     // Start is called before the first frame update
     void Start()
@@ -56,11 +54,8 @@ public class EnemyAI : MonoBehaviour
     {
         if (path == null) return;
 
-        if (currentWaypoint + unit.range >= path.vectorPath.Count)
+        if (currentWaypoint >= path.vectorPath.Count)
         {
-
-
-
             reachedEndOfPath = true;
             return;
         } else
@@ -68,42 +63,49 @@ public class EnemyAI : MonoBehaviour
             reachedEndOfPath = false;
         }
 
-        direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-        force = direction * unit.speed * Time.deltaTime;
-
-        rb.AddForce(force);
-        
+        Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
+        Vector2 attackDirection = ((Vector2)knight.transform.position - rb.position).normalized;
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
         float distanceToTarget = Vector2.Distance(rb.position, knight.transform.position);
+        float speed = unit.speed;
 
-        if (distance < nextWaypointDistance) currentWaypoint++;
+        FlipTransform(direction);
+
+        // If the unit is supposed to flee from player and "kite", negate direction and slow speed
+        if (unit.kitingSpeed > 0 && distanceToTarget < unit.range)
+        {
+            direction = -direction;
+            speed = unit.kitingSpeed;
+        }
+
+        Vector2 force = direction * speed * Time.deltaTime;
+        rb.AddForce(force);
 
         // If the player is within range of the enemy, it will attack
-        if (distanceToTarget < unit.range) unit.Attack();
+        if (distanceToTarget < unit.range) unit.Attack(attackDirection);
 
-        // Avoid value too close 0 to nullify artifacts, flip sprite based on direction
-        if (!Mathf.Approximately(direction.x, 0.0f))
-        {
-            if (direction.x >= 0)
-            {
-                unit.GetComponent<SpriteRenderer>().flipX = false;
-            }
-            else
-            {
-                unit.GetComponent<SpriteRenderer>().flipX = true;
-            }
-        }
+        
+        if (distance < nextWaypointDistance) currentWaypoint++;
 
         animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
     }
 
     /// <summary>
-    /// Method to make the enemy run away from the player, if this is a desired behaviour
+    /// Flips the sprite of the unit based on the direction of it's path
     /// </summary>
-    private void EnemyKiting()
+    /// <param name="direction"></param>
+    private void FlipTransform(Vector2 direction)
     {
-        direction = -((Vector2)knight.transform.position - rb.position).normalized;
-        force = direction * unit.speed * Time.deltaTime;
-        rb.AddForce(force);
+        if (!Mathf.Approximately(direction.x, 0.0f))
+        {
+            if (direction.x >= 0)
+            {
+                unit.transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            else
+            {
+                unit.transform.rotation = Quaternion.Euler(0, -180, 0);
+            }
+        }
     }
 }

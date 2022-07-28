@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6850386920330255405}
   - component: {fileID: 6850386920330255404}
   - component: {fileID: -8337517503764194803}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Ghoul
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -54,8 +54,10 @@ MonoBehaviour:
   boss: 0
   health: 20
   damage: 10
+  attackRate: 0
   range: 0
   speed: 300
+  kitingSpeed: 0
 --- !u!114 &6850386920330255400
 MonoBehaviour:
   m_ObjectHideFlags: 0

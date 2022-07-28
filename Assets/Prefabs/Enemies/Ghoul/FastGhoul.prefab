@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6600074564238626812}
   - component: {fileID: 6600074564238626813}
   - component: {fileID: -3530121275035773831}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FastGhoul
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -54,8 +54,10 @@ MonoBehaviour:
   boss: 0
   health: 10
   damage: 5
+  attackRate: 0
   range: 0
   speed: 800
+  kitingSpeed: 0
 --- !u!114 &6600074564238626809
 MonoBehaviour:
   m_ObjectHideFlags: 0
