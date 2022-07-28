@@ -11,7 +11,7 @@ public class Ghoul : Enemy, IDamageable
     // Properties
     public bool DamageTaken { get; set; }
 
-    public override void Attack(Vector2 direction)
+    public override void Attack(GameObject target)
     {
         throw new NotImplementedException();
     }

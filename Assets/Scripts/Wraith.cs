@@ -13,26 +13,40 @@ public class Wraith : Enemy, IDamageable
     [SerializeField]
     private GameObject projectilePrefab;
     private float attackCooldown;
+    private Rigidbody2D rb;
 
     public void Awake()
     {
         attackCooldown = attackRate;
+
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    public override void Attack(Vector2 direction)
+    public override void Attack(GameObject target)
     {
 
         attackCooldown -= Time.deltaTime;
 
+
         if (attackCooldown <= 0)
         {
             animator.SetTrigger("Attack");
-            Vector2 launchPos = transform.GetChild(0).transform.position;
-            Vector2 relativePosition = new Vector2(launchPos.x, launchPos.y) + direction;
-            GameObject projectile = Instantiate(projectilePrefab, launchPos, Quaternion.identity);
-            projectile.transform.right = direction;
-            projectile.GetComponent<Projectile>().Invoke(Launch(direction));
+            StartCoroutine(InstantiateProjectile(target));
             attackCooldown = attackRate;
         }
+
+    }
+
+
+    private IEnumerator InstantiateProjectile(GameObject target)
+    {
+        yield return new WaitForSeconds(attackDelay);
+        Vector2 launchPos = transform.GetChild(0).transform.position;
+        GameObject projectile = Instantiate(projectilePrefab, launchPos, Quaternion.identity);
+
+        Vector2 direction = ((Vector2)target.transform.position - rb.position).normalized;
+        projectile.transform.right = direction;
+        if (direction.x < 0) projectile.transform.Rotate(180, 0, 0);
+        projectile.GetComponent<Projectile>().Launch(direction);
     }
 }

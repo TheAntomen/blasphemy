@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33daee8f13bf4b74fa577ee55a01f442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchForce: 100
+  launchForce: 200
   damage: 10
 --- !u!212 &319038738665479102
 SpriteRenderer:

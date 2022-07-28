@@ -15,6 +15,8 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField]
     protected float attackRate;
     [SerializeField]
+    protected float attackDelay;
+    [SerializeField]
     public float range;
     [SerializeField]
     public float speed;
@@ -42,7 +44,7 @@ public abstract class Enemy : MonoBehaviour
         CurrentHealth = health;
     }
 
-    public abstract void Attack(Vector2 direction);
+    public abstract void Attack(GameObject target);
 
 
     public void ChangeHealth(int amount)

@@ -64,7 +64,6 @@ public class EnemyAI : MonoBehaviour
         }
 
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-        Vector2 attackDirection = ((Vector2)knight.transform.position - rb.position).normalized;
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
         float distanceToTarget = Vector2.Distance(rb.position, knight.transform.position);
         float speed = unit.speed;
@@ -72,7 +71,7 @@ public class EnemyAI : MonoBehaviour
         FlipTransform(direction);
 
         // If the unit is supposed to flee from player and "kite", negate direction and slow speed
-        if (unit.kitingSpeed > 0 && distanceToTarget < unit.range)
+        if (unit.kitingSpeed > 0 && distanceToTarget < unit.range / 2)
         {
             direction = -direction;
             speed = unit.kitingSpeed;
@@ -82,7 +81,7 @@ public class EnemyAI : MonoBehaviour
         rb.AddForce(force);
 
         // If the player is within range of the enemy, it will attack
-        if (distanceToTarget < unit.range) unit.Attack(attackDirection);
+        if (distanceToTarget < unit.range) unit.Attack(knight);
 
         
         if (distance < nextWaypointDistance) currentWaypoint++;
