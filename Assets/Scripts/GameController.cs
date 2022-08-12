@@ -10,16 +10,14 @@ using TMPro;
 /// </summary>
 public class GameController : MonoBehaviour
 {
-    // Public variables
-    public List<GameObject> enemies;
-    public int currentWave;
-    public int difficulty;
+    // Properties
+    public List<Enemy> Enemies { get; set; } = new List<Enemy>();
 
     // Private variables
     private DungeonGenerator dungeon;
     private SpawnManager spawnManager;
     private GameObject knight;
-    private GameObject boss;
+    private Enemy boss;
     private static GameController instance;
 
     [SerializeField]
@@ -41,7 +39,7 @@ public class GameController : MonoBehaviour
             dungeon.UpdateDungeon();
 
             spawnManager = GetComponent<SpawnManager>();
-            spawnManager.Init(dungeon.currentRoom, 1);
+            spawnManager.Init(dungeon.CurrentRoom, dungeon.CurrentFloor);
 
             // Spawn player
             instance.knight = spawnManager.SpawnPlayer();
@@ -49,15 +47,15 @@ public class GameController : MonoBehaviour
             // Spawn enemies
             if (spawnEnemies)
             {
-                instance.enemies = spawnManager.SpawnEnemies();
+                instance.Enemies = spawnManager.SpawnEnemies();
             }
             // Spawn boss
-            if (dungeon.currentRoom == dungeon.lastRoom)
+            if (dungeon.CurrentRoom == dungeon.lastRoom)
             {
                 instance.boss = spawnManager.SpawnBoss();
             }
 
-            dungeon.currentRoom.visited = true;
+            dungeon.CurrentRoom.visited = true;
 
             Destroy(gameObject);
         }
@@ -70,25 +68,23 @@ public class GameController : MonoBehaviour
         dungeon.UpdateDungeon();
 
         spawnManager = GetComponent<SpawnManager>();
-        spawnManager.Init(dungeon.currentRoom, 1);
+        spawnManager.Init(dungeon.CurrentRoom, dungeon.CurrentFloor);
 
         // Spawn player
         knight = spawnManager.SpawnPlayer();
 
-        dungeon.currentRoom.visited = true;
+        dungeon.CurrentRoom.visited = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (dungeon.currentRoom == dungeon.lastRoom)
+        if (GameObject.FindGameObjectWithTag("Player") == null)
         {
-
+            FloorComplete();
         }
     }
 
-
-    public void FloorComplete()
+    public static void FloorComplete()
     {
         SceneManager.LoadScene("Menu");
     }

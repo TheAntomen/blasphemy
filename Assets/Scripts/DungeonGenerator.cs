@@ -11,11 +11,8 @@ using System.Linq;
 public class DungeonGenerator : MonoBehaviour
 {
     // Properties
-    public Room currentRoom { get; set; }
-
-    // Public variables
-    public int currentFloor = 1;
-    public int nrEnemies;
+    public Room CurrentRoom { get; set; }
+    public FloorManager CurrentFloor { get; set; }
 
     public string enteredFrom;  // Where the player entered from, used to calculate player spawn in new rooms
     public static DungeonGenerator instance;
@@ -24,7 +21,9 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField]
     private int numberOfRooms;
     [SerializeField]
-    
+    private int numberOfFloors;
+
+    private int floorCount = 1;
     private Room[,] rooms;
     private Room startRoom;
     public Room lastRoom;
@@ -36,8 +35,13 @@ public class DungeonGenerator : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            currentRoom = GenerateDungeon();
-            startRoom = currentRoom;
+
+            if (floorCount <= numberOfFloors)
+            {
+                CurrentFloor = ((GameObject)Instantiate(Resources.Load("Floors/Floor" + floorCount))).GetComponent<FloorManager>();
+            }
+            CurrentRoom = GenerateDungeon();
+            startRoom = CurrentRoom;
         }
     }
     /// <summary>
@@ -45,22 +49,22 @@ public class DungeonGenerator : MonoBehaviour
     /// </summary>
     public void UpdateDungeon()
     {
-        string roomPrefabName = instance.currentRoom.PrefabName();
+        string roomPrefabName = instance.CurrentRoom.PrefabName();
         GameObject roomObject = (GameObject)Instantiate(Resources.Load("Rooms/" + roomPrefabName));
         Tilemap obstacleTiles = roomObject.transform.GetChild(1).gameObject.GetComponent<Tilemap>();
-        instance.currentRoom.PopulateObstacles(obstacleTiles);
-        instance.currentRoom.SetPlayerSpawn(enteredFrom);
-        instance.currentRoom.enemySpawns.Clear();
+        instance.CurrentRoom.PopulateObstacles(obstacleTiles);
+        instance.CurrentRoom.SetPlayerSpawn(enteredFrom);
+        instance.CurrentRoom.enemySpawns.Clear();
         
-        if (!currentRoom.visited)
+        if (!CurrentRoom.visited)
         {
-            if (currentRoom == lastRoom)
+            if (CurrentRoom == lastRoom)
             {
-                instance.currentRoom.SetBossSpawn();
+                instance.CurrentRoom.SetBossSpawn();
             }
             else
             {
-                instance.currentRoom.SetEnemySpawns(instance.currentFloor);
+                instance.CurrentRoom.SetEnemySpawns();
             }
         }
     }
@@ -78,7 +82,7 @@ public class DungeonGenerator : MonoBehaviour
         Vector2Int initialRoomCoordinate = new Vector2Int((gridSize / 2) - 1, (gridSize / 2) - 1);
 
         Queue<Room> roomsToCreate = new Queue<Room>();
-        startRoom = new Room(initialRoomCoordinate, nrEnemies);
+        startRoom = new Room(initialRoomCoordinate, CurrentFloor.enemyCount);
         roomsToCreate.Enqueue(startRoom);
         List<Room> createdRooms = new List<Room>();
 
@@ -104,9 +108,6 @@ public class DungeonGenerator : MonoBehaviour
                 }
             }
         }
-
-        
-
         return rooms[initialRoomCoordinate.x, initialRoomCoordinate.y];
     }
 
@@ -147,7 +148,7 @@ public class DungeonGenerator : MonoBehaviour
                     roomFrac += 1.0f / availableNeighbours.Count;
                 }
             }
-            roomsToCreate.Enqueue(new Room(chosenNeighbour, nrEnemies));
+            roomsToCreate.Enqueue(new Room(chosenNeighbour, CurrentFloor.enemyCount));
             availableNeighbours.Remove(chosenNeighbour);
         }
     }

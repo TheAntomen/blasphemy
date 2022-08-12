@@ -27,5 +27,4 @@ public class Ghoul : Enemy, IDamageable
             player.ChangeHealth(-dmg);
         }
     }
-
 }

@@ -121,7 +121,7 @@ public class Room
     /// Method for setting enemy spawns where a spawning point is allowed
     /// </summary>
     /// <param name="currentFloor"></param>
-    public void SetEnemySpawns(int currentFloor)
+    public void SetEnemySpawns()
     {
 
         for (int spawnIndex = 0; spawnIndex < spawnerCount; spawnIndex++)

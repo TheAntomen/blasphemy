@@ -26,7 +26,7 @@ public class Attack : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        Ghoul enemy = other.gameObject.GetComponent<Ghoul>();
+        Enemy enemy = other.gameObject.GetComponent<Enemy>();
 
         if (enemy != null && !hitEnemies.Contains(enemy))
         {

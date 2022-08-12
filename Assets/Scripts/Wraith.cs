@@ -37,7 +37,6 @@ public class Wraith : Enemy, IDamageable
 
     }
 
-
     private IEnumerator InstantiateProjectile(GameObject target)
     {
         yield return new WaitForSeconds(attackDelay);

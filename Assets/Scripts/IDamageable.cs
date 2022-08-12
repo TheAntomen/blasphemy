@@ -10,4 +10,6 @@ public interface IDamageable
     public int CurrentHealth { get; set; }
 
     public void ChangeHealth(int amount);
+
+    public IEnumerator DamageFlash();
 }

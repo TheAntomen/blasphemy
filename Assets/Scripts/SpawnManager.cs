@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -11,50 +12,53 @@ public class SpawnManager : MonoBehaviour
     public bool Spawning { get; private set; }
 
     // Public variables
-    public GameObject regularGhoul;
-    public GameObject fastGhoul;
-    public GameObject strongGhoul;
-    public GameObject floorBoss;
     public GameObject knight;
 
+
     // Private variables
-    private const int START_MONEY = 10;
-    private int currentMoney;
-    private int count;
+    private FloorManager floor;
     private List<Vector3> enemySpawns;
     private Vector3 playerSpawn;
     private Vector3 bossSpawn;
-    private GameObject[] enemyList;
    
-    public void Init(Room currentRoom, int floor)
+    public void Init(Room currentRoom, FloorManager _floor)
     {
-        currentMoney = START_MONEY + floor*2;
-        Spawning = false;
+        floor = _floor;
 
-        enemyList = new GameObject[] {regularGhoul, fastGhoul, strongGhoul};
+        Spawning = false;
 
         enemySpawns = currentRoom.enemySpawns;
         playerSpawn = currentRoom.playerSpawn;
         bossSpawn = currentRoom.bossSpawn;
-
-        count = enemySpawns.Count;
     }
 
     /// <summary>
-    /// Method for spawning enemies while accounting for the current wallet and cost of spawning individual enemies
+    /// Method for spawning Enemies. Randomly decides which enemy to spawn and may, if availabe, spawn a rare variant of the enemy type.
     /// </summary>
-    public List<GameObject> SpawnEnemies()
+    public List<Enemy> SpawnEnemies()
     {
-        List<GameObject> enemies = new List<GameObject>();
+        List<Enemy> enemies = new List<Enemy>();
 
         Spawning = true;
 
         foreach(Vector3 spawn in enemySpawns)
         {
-            int enemyIndex = Random.Range(0, enemyList.Length);
-            enemies.Add(Instantiate(enemyList[enemyIndex], spawn, Quaternion.identity));
-        }
+            int enemyIndex = Random.Range(0, floor.enemyTypes.Length);
+            Enemy enemyType = floor.enemyTypes[enemyIndex];
 
+            bool rarespawn = Random.value <= floor.rareSpawnChance;
+
+            if (rarespawn && enemyType.rareVariants != null)
+            {
+                int rareTypIndex = Random.Range(0, enemyType.rareVariants.Length);
+                Enemy rareEnemy = enemyType.rareVariants[rareTypIndex];
+                enemies.Add(Instantiate(rareEnemy, spawn, Quaternion.identity));
+            }
+            else
+            {
+                enemies.Add(Instantiate(enemyType, spawn, Quaternion.identity));
+            }
+        }
         return enemies;
     }
 
@@ -63,8 +67,8 @@ public class SpawnManager : MonoBehaviour
         return Instantiate(knight, playerSpawn, Quaternion.identity);
     }
 
-    public GameObject SpawnBoss()
+    public Enemy SpawnBoss()
     {
-        return Instantiate(floorBoss, bossSpawn, Quaternion.identity);
+        return Instantiate(floor.boss, bossSpawn, Quaternion.identity);
     }
 }

@@ -22,6 +22,8 @@ public abstract class Enemy : MonoBehaviour
     public float speed;
     [SerializeField]
     public float kitingSpeed;
+    [SerializeField]
+    public Enemy[] rareVariants;
 
     protected bool damageTaken;
     private Color damageColor = new Color(1.000f, 0f, 0f, 1.000f);
@@ -58,14 +60,14 @@ public abstract class Enemy : MonoBehaviour
 
         if (CurrentHealth == 0)
         {
-            if (boss) controller.FloorComplete();
+            if (boss) GameController.FloorComplete();
             ai.reachedEndOfPath = true;
-            controller.enemies.Remove(this.gameObject);
-            animator.SetBool("Dead", true);
+            controller.Enemies.Remove(this);
+            animator.SetTrigger("Dead");
         }
     }
 
-    protected IEnumerator DamageFlash()
+    public IEnumerator DamageFlash()
     {
         SpriteRenderer renderer = GetComponent<SpriteRenderer>();
         Color defaultColor = renderer.color;

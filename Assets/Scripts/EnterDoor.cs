@@ -17,14 +17,14 @@ public class EnterDoor : MonoBehaviour
         {
             GameController controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
             
-            if (controller.enemies.Count <= 0)
+            if (controller.Enemies.Count <= 0)
             {
                 GameObject dungeon = controller.transform.GetChild(0).gameObject;
                 DungeonGenerator dungeonGenerator = dungeon.GetComponent<DungeonGenerator>();
-                Room room = dungeonGenerator.currentRoom;
-                dungeonGenerator.currentRoom = room.GetNeighbour(direction); // Change room to load
+                Room room = dungeonGenerator.CurrentRoom;
+                dungeonGenerator.CurrentRoom = room.GetNeighbour(direction); // Change room to load
                 dungeonGenerator.enteredFrom = direction;   // Tell the door direction
-                SceneManager.LoadScene("TestScene");
+                SceneManager.LoadScene("PlayScene");
             }
         }
     }

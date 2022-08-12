@@ -7,21 +7,27 @@ using Cinemachine;
 /// <summary>
 /// Class for the player-controlled knight
 /// </summary>
-public class Knight : MonoBehaviour
+public class Knight : MonoBehaviour, IDamageable
 {
 
     // Properties
     public float mouseAngle { get; private set; }
+    public int CurrentHealth { get; set; }
 
     // Public variables
-    public const int MAX_HP = 100;
-    public const float MAX_SPEED = 5.0f;
-    public const float ATTACK_SPEED = 0.5f;
-    public float timeInvincible = 1.0f;
     public GameObject SlashAttack;
     public AudioClip swordAttack;
 
     // Private variables
+    [SerializeField]
+    private int health;
+    [SerializeField]
+    private float speed;
+    [SerializeField]
+    private float attackRate;
+    [SerializeField]
+    private float timeInvincible;
+
     private Rigidbody2D rb2d;
     private Animator animator;
     private ArmPivot armpivot;
@@ -43,10 +49,9 @@ public class Knight : MonoBehaviour
     private bool dead;
     private bool attacking;
 
-    private void Awake()
-    {
-           
-    }
+    protected bool damageTaken;
+    private Color damageColor = new Color(1.000f, 0f, 0f, 1.000f);
+    private int damageFlashCount = 6;
 
     // Start is called before the first frame update
     void Start()
@@ -58,7 +63,7 @@ public class Knight : MonoBehaviour
         sword_renderer = armpivot.transform.GetChild(0).GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         
-        currentHp = MAX_HP;
+        currentHp = health;
     }
 
     // Update is called once per frame
@@ -117,8 +122,6 @@ public class Knight : MonoBehaviour
 
     void FixedUpdate()
     {
-        float speed = MAX_SPEED;
-
         Vector2 position = rb2d.position;
         position.x = position.x + speed * horizontal * Time.deltaTime;
         position.y = position.y + speed * vertical * Time.deltaTime;
@@ -134,7 +137,7 @@ public class Knight : MonoBehaviour
         if (!attacking)
         {
             attacking = true;
-            attackTimer = ATTACK_SPEED;
+            attackTimer = attackRate;
             armpivot.AttackRotation();
             offset = relativePosition.normalized * 1.5f;
             GameObject attackObject = Instantiate(SlashAttack, rb2d.position + (Vector2.up * 0.5f) + offset, transform.rotation * Quaternion.Euler(0f, 0f, mouseAngle));
@@ -157,32 +160,39 @@ public class Knight : MonoBehaviour
             isInvincible = true;
             invincibleTimer = timeInvincible;
 
-            InvokeRepeating("DamageTaken", 0.0f, 0.15f);
+            StartCoroutine(DamageFlash());
         }
-        currentHp = Mathf.Clamp(currentHp + amount, 0, MAX_HP);
-        UIHealthBar.instance.SetValue(currentHp / (float)MAX_HP);
+        currentHp = Mathf.Clamp(currentHp + amount, 0, health);
+        UIHealthBar.instance.SetValue(currentHp / (float)health);
+
+        if (currentHp == 0)
+        {
+            animator.SetTrigger("Dead");
+        }
+
     }
 
     /// <summary>
     /// Displays effects of the knight taking damage, swithcing between colors
     /// </summary>
-    public void DamageTaken()
+    public IEnumerator DamageFlash()
     {
-        Color damageColor = new Color(1.000f, 0.552f, 0.552f, 1.000f);
-        Color normalColor = new Color(1.000f, 1.000f, 1.000f, 1.000f);
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        Color defaultColor = renderer.color;
 
-        if (String.Equals(s_renderer.color.ToString(), damageColor.ToString()))
+        for (int state = 0; state < damageFlashCount; state++)
         {
-            s_renderer.color = normalColor;
+            if ((state % 2) == 0)
+            {
+                renderer.color = damageColor;
+            }
+            else
+            {
+                renderer.color = defaultColor;
+            }
+            yield return new WaitForSeconds(0.1f);
         }
-        else if (String.Equals(s_renderer.color.ToString(), normalColor.ToString()))
-        {
-            s_renderer.color = damageColor;
-        }
-        else
-        {
-            s_renderer.color = normalColor;
-        }
+        yield break;
     }
 
     /// <summary>
