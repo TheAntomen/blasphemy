@@ -86,7 +86,7 @@ public class EnemyAI : MonoBehaviour
         
         if (distance < nextWaypointDistance) currentWaypoint++;
 
-        animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
+        animator.SetFloat("Speed", Mathf.Abs(rb.linearVelocity.x));
     }
 
     /// <summary>

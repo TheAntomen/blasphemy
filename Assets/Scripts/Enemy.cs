@@ -24,23 +24,26 @@ public abstract class Enemy : MonoBehaviour
     public float kitingSpeed;
     [SerializeField]
     public Enemy[] rareVariants;
+    [SerializeField]
+    public AudioClip hitClip;
+
 
     protected bool damageTaken;
     private Color damageColor = new Color(1.000f, 0f, 0f, 1.000f);
     private int damageFlashCount = 6;
     protected Animator animator;
-    
+    protected Rigidbody2D rb;
 
-    AudioClip hitClip;
     AudioSource audioSource;
     GameController controller;
     EnemyAI ai;
-
+    
     protected void Start()
     {
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
         ai = GetComponent<EnemyAI>();
+        rb = GetComponent<Rigidbody2D>();
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
         CurrentHealth = health;
@@ -53,14 +56,19 @@ public abstract class Enemy : MonoBehaviour
     {
         if (amount < 0 && !damageTaken)
         {
-            PlaySound(hitClip);
+            if (hitClip != null)
+            {
+                PlaySound(hitClip);
+            }
+
             StartCoroutine(DamageFlash());
         }
         CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0, health);
 
         if (CurrentHealth == 0)
         {
-            if (boss) GameController.FloorComplete();
+            if (boss) controller.FloorComplete();
+            rb.simulated = false;
             ai.reachedEndOfPath = true;
             controller.Enemies.Remove(this);
             animator.SetTrigger("Dead");

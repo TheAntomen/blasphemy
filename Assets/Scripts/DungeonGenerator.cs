@@ -67,6 +67,7 @@ public class DungeonGenerator : MonoBehaviour
                 instance.CurrentRoom.SetEnemySpawns();
             }
         }
+
     }
 
     /// <summary>

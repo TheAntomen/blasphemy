@@ -32,7 +32,7 @@ public class GameController : MonoBehaviour
         {
             DontDestroyOnLoad(gameObject);
             GameInfo.difficulty = 1;
-            instance = this;           
+            instance = this;
         }else
         {
             dungeon = DungeonGenerator.instance;  // Reference to dungeon
@@ -53,6 +53,7 @@ public class GameController : MonoBehaviour
             if (dungeon.CurrentRoom == dungeon.lastRoom)
             {
                 instance.boss = spawnManager.SpawnBoss();
+                instance.Enemies.Add(instance.boss);
             }
 
             dungeon.CurrentRoom.visited = true;
@@ -82,10 +83,15 @@ public class GameController : MonoBehaviour
         {
             FloorComplete();
         }
+        if (Input.GetButtonDown("Jump"))
+        {
+            FloorComplete();
+        }
     }
 
-    public static void FloorComplete()
+    public void FloorComplete()
     {
+        Destroy(gameObject);
         SceneManager.LoadScene("Menu");
     }
 

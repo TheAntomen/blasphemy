@@ -13,13 +13,10 @@ public class Wraith : Enemy, IDamageable
     [SerializeField]
     private GameObject projectilePrefab;
     private float attackCooldown;
-    private Rigidbody2D rb;
 
     public void Awake()
     {
         attackCooldown = attackRate;
-
-        rb = GetComponent<Rigidbody2D>();
     }
 
     public override void Attack(GameObject target)
@@ -43,7 +40,12 @@ public class Wraith : Enemy, IDamageable
         Vector2 launchPos = transform.GetChild(0).transform.position;
         GameObject projectile = Instantiate(projectilePrefab, launchPos, Quaternion.identity);
 
-        Vector2 direction = ((Vector2)target.transform.position - rb.position).normalized;
+        //calculate aimed target
+        BoxCollider2D targetCollider = target.GetComponent<BoxCollider2D>();
+        Rigidbody2D targetbody = target.GetComponent<Rigidbody2D>();
+        Vector2 aimTarget = (Vector2)targetCollider.bounds.center + targetbody.linearVelocity;
+
+        Vector2 direction = (aimTarget - rb.position).normalized;
         projectile.transform.right = direction;
         if (direction.x < 0) projectile.transform.Rotate(180, 0, 0);
         projectile.GetComponent<Projectile>().Launch(direction);
