@@ -9,6 +9,6 @@ A grid-based procedural generation system, heavily inspired by the game "Binding
 ## Custom-made animations and assets
 
 ![demo pool](images/pools.png)
-![demo tilemap](images/tilemap.png)
 ![demo wraith idle](images/wraith_idle_resized.gif)
 ![demo wraith attack](images/wraith_attack_resized.gif)
+![demo tilemap](images/tilemap.png)
